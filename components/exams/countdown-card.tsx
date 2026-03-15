@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExamRecord } from "@/lib/types/exams";
 
 type CountdownCardProps = {
-  nextExam: ExamRecord;
+  nextExam: ExamRecord | null;
   secondsRemaining: number;
 };
 
@@ -22,7 +22,7 @@ export function CountdownCard({ nextExam, secondsRemaining }: CountdownCardProps
         <div className="flex items-center justify-between gap-3">
           <CardTitle className="text-[15px]">Countdown</CardTitle>
           <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-            {nextExam.courseCode}
+            {nextExam?.courseCode ?? "Completed"}
           </p>
         </div>
       </CardHeader>

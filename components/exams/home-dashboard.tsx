@@ -1,21 +1,24 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 import { ExamCalendarGrid } from "@/components/calendar/exam-calendar-grid";
 import { CountdownCard } from "@/components/exams/countdown-card";
 import { OverviewCard } from "@/components/exams/overview-card";
-import { getExamDateTime } from "@/lib/data/exams";
+import { getExamDateTime, isUpcomingExam } from "@/lib/data/exams";
 import { ExamRecord } from "@/lib/types/exams";
 
 type HomeDashboardProps = {
   exams: ExamRecord[];
 };
 
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 export function HomeDashboard({ exams }: HomeDashboardProps) {
   const [currentTime, setCurrentTime] = useState(() => getExamDateTime(exams[0]).getTime());
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const syncClock = () => {
       setCurrentTime(Date.now());
     };
@@ -36,21 +39,19 @@ export function HomeDashboard({ exams }: HomeDashboardProps) {
     [exams]
   );
 
-  const nextExam = useMemo(
-    () => exams.find((exam) => getExamDateTime(exam).getTime() >= currentTime) ?? exams.at(-1) ?? exams[0],
-    [currentTime, exams]
-  );
+  const upcomingExams = useMemo(() => {
+    const referenceDate = new Date(currentTime);
+    return exams.filter((exam) => isUpcomingExam(exam, referenceDate));
+  }, [currentTime, exams]);
 
-  const examsLeft = useMemo(
-    () => exams.filter((exam) => getExamDateTime(exam).getTime() >= currentTime).length,
-    [currentTime, exams]
-  );
+  const nextExam = upcomingExams[0] ?? null;
+  const examsLeft = upcomingExams.length;
 
   const secondsRemaining = nextExam
     ? Math.max(Math.floor((getExamDateTime(nextExam).getTime() - currentTime) / 1000), 0)
     : 0;
 
-  if (!nextExam) {
+  if (!exams.length) {
     return null;
   }
 

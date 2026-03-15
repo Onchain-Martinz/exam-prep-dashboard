@@ -178,7 +178,7 @@ export const examRecords: ExamRecord[] = [
         "Question 2\n\nUsing the data of Question 1 compute:\n\na. 50th Percentile\nb. Mode",
         "Question 3\n\nSupposing the data below represents the Statutory Revenue Allocation to Local Governments (in billions) according to zones from Jan–Dec 2022\n\nLocal Govts Oru East Mbaitoli Orlu Mbaise Ikeduru\nAllocation (Billions) 5.9 2.3 3.4 2.5 2.7\n\na. Present the information in a pie chart.\nb. Discuss 3 methods of presenting statistical data.",
         "Question 4\n\nDetermine the following from the frequency table provided in Q1 above:\n\na. Mode\nb. Median\nc. Convert 0.6428 to percentage",
-        "Question 5\n\nThe score of 35 students that took an assessment test on Law 121 is shown below:\n\n(The numbers are partially crossed out in the image, but visible values include:)\n\n23, 36, 40, 28, 31, 39, 27, 44, 32,\n48, 37, 33, 30, 57, 38, 29, 24, 26,\n24, 38, 36, 23, 19, 42, 30, 50, 18, 22,\n32, 28, 34, 38, 35, 41, 27\n\na. Present the information in a Grouped Frequency Distribution Table.\n\nb. Discuss the Scales of Measurement known to you.",
+        "Question 5\n\nThe score of 35 students that took an assessment test on Law 121 is shown below:\n\n23, 36, 40, 28, 31, 39, 27, 44, 32,\n48, 37, 33, 30, 57, 38, 29, 24, 26,\n24, 38, 36, 23, 19, 42, 30, 50, 18, 22,\n32, 28, 34, 38, 35, 41, 27\n\na. Present the information in a Grouped Frequency Distribution Table.\n\nb. Discuss the Scales of Measurement known to you.",
         "Question 6\n\nUsing the data of Question 5 compute the following measures:\n\na. Variance\nb. Mean Deviation"
       ]
     }
@@ -362,9 +362,30 @@ export function getAllExams() {
   });
 }
 
-export function getNextExam(referenceDate = new Date()) {
-  const exams = getAllExams();
-  return exams.find((exam) => getExamDateTime(exam) >= referenceDate) ?? exams[0];
+export function isUpcomingExam(
+  exam: Pick<ExamRecord, "date" | "time">,
+  referenceDate = new Date()
+) {
+  return getExamDateTime(exam).getTime() >= referenceDate.getTime();
+}
+
+export function isCompletedExam(
+  exam: Pick<ExamRecord, "date" | "time">,
+  referenceDate = new Date()
+) {
+  return !isUpcomingExam(exam, referenceDate);
+}
+
+export function getUpcomingExams(referenceDate = new Date()) {
+  return getAllExams().filter((exam) => isUpcomingExam(exam, referenceDate));
+}
+
+export function getNextExam(referenceDate = new Date()): ExamRecord | null {
+  return getUpcomingExams(referenceDate)[0] ?? null;
+}
+
+export function getExamsLeft(referenceDate = new Date()) {
+  return getUpcomingExams(referenceDate).length;
 }
 
 export function getExamBySlug(slug: string) {

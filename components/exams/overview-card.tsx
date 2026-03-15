@@ -4,7 +4,7 @@ import { ExamRecord } from "@/lib/types/exams";
 type OverviewCardProps = {
   totalCourses: number;
   examsLeft: number;
-  nextExam: ExamRecord;
+  nextExam: ExamRecord | null;
 };
 
 export function OverviewCard({ totalCourses, examsLeft, nextExam }: OverviewCardProps) {
@@ -13,8 +13,8 @@ export function OverviewCard({ totalCourses, examsLeft, nextExam }: OverviewCard
     { label: "Exams left", value: String(examsLeft) },
     {
       label: "Upcoming exam",
-      value: nextExam.courseCode,
-      note: nextExam.courseTitle
+      value: nextExam?.courseCode ?? "All exams done",
+      note: nextExam?.courseTitle ?? "No upcoming exams"
     }
   ];
 
