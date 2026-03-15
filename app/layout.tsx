@@ -1,0 +1,35 @@
+import type { Metadata } from "next";
+
+import "@/app/globals.css";
+import { FeedbackWidget } from "@/components/feedback/feedback-widget";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import { themeInitializationScript } from "@/lib/theme";
+
+export const metadata: Metadata = {
+  title: "Exam Study Plan",
+  description: "A calm, premium exam preparation planner."
+};
+
+export default function RootLayout({
+  children
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitializationScript }} />
+      </head>
+      <body>
+        <ThemeProvider>
+          <div className="flex min-h-screen flex-col">
+            <div className="flex-1">{children}</div>
+            <SiteFooter />
+          </div>
+          <FeedbackWidget />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
