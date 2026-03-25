@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 import { ExamCalendarGrid } from "@/components/calendar/exam-calendar-grid";
 import { CountdownCard } from "@/components/exams/countdown-card";
+import { ExamReminderControl } from "@/components/exams/exam-reminder-control";
 import { OverviewCard } from "@/components/exams/overview-card";
 import { getExamDateTime, isUpcomingExam } from "@/lib/data/exams";
 import { ExamRecord } from "@/lib/types/exams";
@@ -59,7 +60,11 @@ export function HomeDashboard({ exams }: HomeDashboardProps) {
     <div className="space-y-3.5 sm:space-y-4">
       <section className="grid gap-2.5 lg:grid-cols-[minmax(0,1fr)_18.5rem] lg:items-start xl:grid-cols-[minmax(0,1fr)_19rem]">
         <OverviewCard totalCourses={totalCourses} examsLeft={examsLeft} nextExam={nextExam} />
-        <CountdownCard nextExam={nextExam} secondsRemaining={secondsRemaining} />
+        <CountdownCard
+          nextExam={nextExam}
+          secondsRemaining={secondsRemaining}
+          reminderControl={<ExamReminderControl exams={exams} />}
+        />
       </section>
 
       <ExamCalendarGrid exams={exams} currentTime={currentTime} />

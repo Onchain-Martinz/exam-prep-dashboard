@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageSquareText, X } from "lucide-react";
 
+import { FEEDBACK_FORM_NAME } from "@/components/feedback/netlify-feedback-form";
 import { Button } from "@/components/ui/button";
 
 type SubmissionState = "idle" | "submitting" | "success" | "error";
@@ -69,15 +70,19 @@ export function FeedbackWidget() {
     setErrorMessage("");
 
     try {
-      const response = await fetch("/api/feedback", {
+      const formPayload = new URLSearchParams();
+      formPayload.set("form-name", FEEDBACK_FORM_NAME);
+      formPayload.set("name", name.trim());
+      formPayload.set("message", message.trim());
+      formPayload.set("bot-field", "");
+
+      const response = await fetch("/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json"
         },
-        body: JSON.stringify({
-          name,
-          message
-        })
+        body: formPayload.toString()
       });
 
       if (!response.ok) {
@@ -157,13 +162,24 @@ export function FeedbackWidget() {
                 </button>
               </div>
 
-              <form className="mt-4 space-y-3" onSubmit={handleSubmit}>
+              <form
+                className="mt-4 space-y-3"
+                action="/"
+                method="POST"
+                name={FEEDBACK_FORM_NAME}
+                data-netlify="true"
+                netlify-honeypot="bot-field"
+                onSubmit={handleSubmit}
+              >
+                <input type="hidden" name="form-name" value={FEEDBACK_FORM_NAME} />
+                <input type="hidden" name="bot-field" value="" />
                 <label className="block space-y-1.5">
                   <span className="text-[12px] font-medium text-muted-foreground">
                     Name (optional)
                   </span>
                   <input
                     id={nameId}
+                    name="name"
                     type="text"
                     value={name}
                     onChange={(event) => setName(event.target.value)}
@@ -179,6 +195,7 @@ export function FeedbackWidget() {
                   </span>
                   <textarea
                     id={messageId}
+                    name="message"
                     value={message}
                     onChange={(event) => setMessage(event.target.value)}
                     required

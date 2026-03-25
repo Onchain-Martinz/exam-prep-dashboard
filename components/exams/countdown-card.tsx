@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,9 +7,14 @@ import { ExamRecord } from "@/lib/types/exams";
 type CountdownCardProps = {
   nextExam: ExamRecord | null;
   secondsRemaining: number;
+  reminderControl?: ReactNode;
 };
 
-export function CountdownCard({ nextExam, secondsRemaining }: CountdownCardProps) {
+export function CountdownCard({
+  nextExam,
+  secondsRemaining,
+  reminderControl
+}: CountdownCardProps) {
   const days = Math.floor(secondsRemaining / 86400);
   const minutes = Math.floor((secondsRemaining % 3600) / 60);
   const seconds = secondsRemaining % 60;
@@ -43,6 +49,7 @@ export function CountdownCard({ nextExam, secondsRemaining }: CountdownCardProps
             <span>Sec</span>
           </div>
         </div>
+        {reminderControl}
       </CardContent>
     </Card>
   );

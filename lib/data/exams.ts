@@ -369,6 +369,10 @@ export function isUpcomingExam(
   return getExamDateTime(exam).getTime() >= referenceDate.getTime();
 }
 
+export function hasSpecifiedExamTime(exam: Pick<ExamRecord, "time">) {
+  return toStartMinutes(exam.time) !== null;
+}
+
 export function isCompletedExam(
   exam: Pick<ExamRecord, "date" | "time">,
   referenceDate = new Date()
