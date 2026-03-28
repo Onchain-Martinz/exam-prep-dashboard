@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import "@/app/globals.css";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { FeedbackWidget } from "@/components/feedback/feedback-widget";
 import { NetlifyFeedbackForm } from "@/components/feedback/netlify-feedback-form";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -31,6 +33,9 @@ export default function RootLayout({
           </div>
           <FeedbackWidget />
         </ThemeProvider>
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
       </body>
     </html>
   );

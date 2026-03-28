@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Psy111Solver } from "@/components/exams/psy111-solver";
 import { ExamRecord } from "@/lib/types/exams";
 
 export function PastQuestionsPanel({ exam }: { exam: ExamRecord }) {
@@ -35,9 +34,6 @@ export function PastQuestionsPanel({ exam }: { exam: ExamRecord }) {
               <pre className="max-w-3xl whitespace-pre-wrap break-words font-sans text-sm leading-6 text-foreground">
                 {item}
               </pre>
-              {exam.slug === "psy-111" && index < 6 ? (
-                <Psy111Solver questionNumber={index + 1} />
-              ) : null}
             </CardContent>
           </Card>
         ))}
