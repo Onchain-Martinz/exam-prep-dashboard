@@ -3,6 +3,17 @@ export type QuestionSet = {
   items: string[];
 };
 
+export type AnswerReveal = {
+  questionNumber: string | number;
+  question: string;
+  answer: string;
+};
+
+export type TopicKeyPoints = {
+  topic: string;
+  points: string[];
+};
+
 export type ExamRecord = {
   slug: string;
   courseCode: string;
@@ -11,4 +22,6 @@ export type ExamRecord = {
   time: string;
   pastQuestions: QuestionSet | null;
   topicsToRead: string[];
+  answerReveals?: AnswerReveal[];
+  topicKeyPoints?: TopicKeyPoints[];
 };

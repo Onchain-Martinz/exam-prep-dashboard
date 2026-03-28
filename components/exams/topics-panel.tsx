@@ -1,8 +1,11 @@
+import { TopicKeyPointsItem } from "@/components/exams/topic-key-points-item";
 import { Card, CardContent } from "@/components/ui/card";
 import { ExamRecord } from "@/lib/types/exams";
 
 export function TopicsPanel({ exam }: { exam: ExamRecord }) {
-  if (!exam.topicsToRead.length) {
+  const hasTopicKeyPoints = Boolean(exam.topicKeyPoints?.length);
+
+  if (!exam.topicsToRead.length && !hasTopicKeyPoints) {
     return (
       <Card>
         <CardContent className="p-4 sm:p-5">
@@ -11,6 +14,16 @@ export function TopicsPanel({ exam }: { exam: ExamRecord }) {
           </p>
         </CardContent>
       </Card>
+    );
+  }
+
+  if (hasTopicKeyPoints) {
+    return (
+      <div className="space-y-2.5 sm:space-y-3">
+        {exam.topicKeyPoints?.map((item) => (
+          <TopicKeyPointsItem key={`${exam.slug}-${item.topic}`} item={item} />
+        ))}
+      </div>
     );
   }
 
