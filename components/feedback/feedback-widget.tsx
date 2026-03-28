@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageSquareText, X } from "lucide-react";
 
-import { FEEDBACK_FORM_NAME } from "@/components/feedback/netlify-feedback-form";
+import { FEEDBACK_FORM_NAME } from "@/components/feedback/constants";
 import { Button } from "@/components/ui/button";
 
 type SubmissionState = "idle" | "submitting" | "success" | "error";
@@ -167,8 +167,6 @@ export function FeedbackWidget() {
                 action="/"
                 method="POST"
                 name={FEEDBACK_FORM_NAME}
-                data-netlify="true"
-                netlify-honeypot="bot-field"
                 onSubmit={handleSubmit}
               >
                 <input type="hidden" name="form-name" value={FEEDBACK_FORM_NAME} />

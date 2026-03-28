@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { FeedbackWidget } from "@/components/feedback/feedback-widget";
-import { NetlifyFeedbackForm } from "@/components/feedback/netlify-feedback-form";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { themeInitializationScript } from "@/lib/theme";
@@ -25,7 +24,6 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitializationScript }} />
       </head>
       <body>
-        <NetlifyFeedbackForm />
         <ThemeProvider>
           <div className="flex min-h-screen flex-col">
             <div className="flex-1">{children}</div>
